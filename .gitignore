@@ -1,0 +1,6 @@
+# Project exclude paths
+/cloud-computing-hw1-chatoperation/target/
+/cloud-computing-hw1-collection/target/
+/cloud-computing-hw1-common/target/
+/cloud-computing-hw1-suggestion/target/
+/target/
