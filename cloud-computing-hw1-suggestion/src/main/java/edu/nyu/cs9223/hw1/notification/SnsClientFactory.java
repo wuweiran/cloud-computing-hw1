@@ -1,12 +1,8 @@
 package edu.nyu.cs9223.hw1.notification;
 
 import com.amazonaws.services.sns.AmazonSNS;
-import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.AmazonSNSClientBuilder;
-import com.amazonaws.services.sqs.AmazonSQS;
-import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import edu.nyu.cs9223.hw1.config.Config;
-import edu.nyu.cs9223.hw1.queue.SqsClient;
 
 /**
  * @author wuweiran

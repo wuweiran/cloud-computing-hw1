@@ -33,10 +33,12 @@ public class SqsClient {
     public List<String> receiveMessages() {
         final ReceiveMessageRequest receiveMessageRequest =
                 new ReceiveMessageRequest(queueUrl);
-        final List<Message> messages = sqs.receiveMessage(receiveMessageRequest).getMessages();
         List<String> result = new LinkedList<>();
-        for (Message message : messages) {
-            result.add(message.getBody());
+        List<Message> messages;
+        while((messages = sqs.receiveMessage(receiveMessageRequest).getMessages()).size() != 0) {
+            for (Message message : messages) {
+                result.add(message.getBody());
+            }
         }
         return result;
     }

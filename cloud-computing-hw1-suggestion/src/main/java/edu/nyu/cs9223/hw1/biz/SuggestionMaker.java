@@ -1,5 +1,6 @@
 package edu.nyu.cs9223.hw1.biz;
 
+import com.google.gson.JsonParseException;
 import edu.nyu.cs9223.hw1.UserInfo;
 import edu.nyu.cs9223.hw1.notification.SnsClient;
 import edu.nyu.cs9223.hw1.notification.SnsClientFactory;
@@ -20,14 +21,20 @@ public class SuggestionMaker {
         SqsClient sqsClient = SqsClientFactory.getInstance();
         List<String> messages = sqsClient.receiveMessages();
         for (String userInfoJson : messages) {
-            UserInfo userInfo = UserInfo.fromJson(userInfoJson);
-            Suggestion suggestion = new Suggestion(userInfo);
-            push(userInfo.getPhoneNumber(), suggestion);
+            try {
+                UserInfo userInfo = UserInfo.fromSlots(userInfoJson);
+                Suggestion suggestion = Suggestion.fromUserInfo(userInfo);
+                if (suggestion != null) {
+                    push(userInfo.getPhoneNumber(), suggestion.toSms());
+                }
+            } catch (JsonParseException jpe) {
+                // do nothing
+            }
         }
     }
 
-    private static void push(String phoneNumber, Suggestion suggestion) {
+    private static void push(String phoneNumber, String message) {
         SnsClient snsClient = SnsClientFactory.getInstance();
-        snsClient.sendSms(phoneNumber, suggestion.toSms());
+        snsClient.sendSms(message, phoneNumber);
     }
 }
